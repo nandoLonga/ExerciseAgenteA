@@ -1,13 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package co.edu.sena.exerciseagentea.view;
 
 import co.edu.sena.exerciseagentea.controller.IShedController;
 import co.edu.sena.exerciseagentea.controller.ShedController;
 import co.edu.sena.exerciseagentea.model.Shed;
+import co.edu.sena.exerciseagentea.utils.MessageUtils;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,6 +23,7 @@ public class JFrameShed extends javax.swing.JFrame {
      */
     public JFrameShed() {
         initComponents();
+        fillTable();
     }
     
     public void fillTable()
@@ -37,7 +36,7 @@ public class JFrameShed extends javax.swing.JFrame {
         
         //filas
         String[] row = new String[2];
-        for (Shed shed : ShedController.sheds) {
+        for (Shed shed : ShedController.shedList) {
             row[0] = String.valueOf(shed.getNumber());
             row[1] = shed.getStatus();
             model.addRow(row);
@@ -47,8 +46,7 @@ public class JFrameShed extends javax.swing.JFrame {
     public void fillComboDepartments()
     {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        jComboBoxStatus.setModel(model);        
-        model.addAll(ShedController.sheds);
+        
     }
     
     
@@ -63,12 +61,13 @@ public class JFrameShed extends javax.swing.JFrame {
         jButtonInsert = new javax.swing.JButton();
         jButtonUpdate = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
-        jButton4Clean = new javax.swing.JButton();
+        jButtonClean = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableSheds = new javax.swing.JTable();
         jComboBoxStatus = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Galpones");
 
         jLabelTitle.setText("Gestión de inforamión galpones");
 
@@ -77,24 +76,35 @@ public class JFrameShed extends javax.swing.JFrame {
         jLabelStatus.setText("Estado galpón");
 
         jButtonInsert.setText("Crear");
+        jButtonInsert.addActionListener(this::jButtonInsertActionPerformed);
 
         jButtonUpdate.setText("Actualizar");
+        jButtonUpdate.setEnabled(false);
+        jButtonUpdate.addActionListener(this::jButtonUpdateActionPerformed);
 
         jButtonDelete.setText("Eliminar");
+        jButtonDelete.setEnabled(false);
+        jButtonDelete.addActionListener(this::jButtonDeleteActionPerformed);
 
-        jButton4Clean.setText("Limpiar");
+        jButtonClean.setText("Limpiar");
+        jButtonClean.addActionListener(this::jButtonCleanActionPerformed);
 
         jTableSheds.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
+        jTableSheds.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableShedsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableSheds);
 
-        jComboBoxStatus.addActionListener(this::jComboBoxStatusActionPerformed);
+        jComboBoxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DISPONIBLE", "OCUPADO" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -117,12 +127,13 @@ public class JFrameShed extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonDelete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4Clean))
+                        .addComponent(jButtonClean)
+                        .addGap(116, 116, 116))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabelStatus)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBoxStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(116, 116, 116))
+                        .addComponent(jComboBoxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -131,7 +142,7 @@ public class JFrameShed extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(261, 261, 261)
                         .addComponent(jLabelTitle)))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,19 +160,109 @@ public class JFrameShed extends javax.swing.JFrame {
                     .addComponent(jButtonInsert)
                     .addComponent(jButtonUpdate)
                     .addComponent(jButtonDelete)
-                    .addComponent(jButton4Clean))
+                    .addComponent(jButtonClean))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBoxStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxStatusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxStatusActionPerformed
+    private void jButtonCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCleanActionPerformed
+        clear();
+    }//GEN-LAST:event_jButtonCleanActionPerformed
 
+    private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
+        try
+        {
+            Shed shed = new Shed();
+            shed.setNumber(Integer.parseInt(jTextFieldNumber.getText()));
+            shed.setStatus (jComboBoxStatus.getSelectedItem().toString());
+            
+            shedController.insert(shed);
+            MessageUtils.getInstance().showInfo("El registro fue creado");
+            clear();
+            fillTable();
+            
+        } catch (NumberFormatException ex) 
+        {
+            MessageUtils.getInstance().showError("El número del galpón debe contener solo números");
+        }
+        catch (Exception ex) 
+        {
+            MessageUtils.getInstance().showError(ex.getMessage());
+        }
+    }//GEN-LAST:event_jButtonInsertActionPerformed
+
+    private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
+        try
+        {
+            Shed shed = new Shed();
+            shed.setNumber(Integer.parseInt(jTextFieldNumber.getText()));
+            shed.setStatus (jComboBoxStatus.getSelectedItem().toString());
+            
+            shedController.update(shed);
+            MessageUtils.getInstance().showInfo("El registro fue modificado con exito");
+            clear();
+            fillTable();
+            
+        } catch (NumberFormatException ex) 
+        {
+            MessageUtils.getInstance().showError("El número del galpón debe contener solo números");
+        }
+        catch (Exception ex) 
+        {
+            MessageUtils.getInstance().showError(ex.getMessage());
+        }
+    }//GEN-LAST:event_jButtonUpdateActionPerformed
+
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
+        int option = MessageUtils.getInstance().showConfirm("Está seguro de eliminar el seguro?=");
+        if(option == JOptionPane.YES_OPTION)
+        {
+            try {
+                shedController.delete(Integer.parseInt(jTextFieldNumber.getText()));
+                MessageUtils.getInstance().showInfo("Registro eliminado con exito");
+                clear();
+                fillTable();
+            } catch (Exception ex) {
+                MessageUtils.getInstance().showError(ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
+
+    private void jTableShedsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableShedsMouseClicked
+        int rowSelected = jTableSheds.getSelectedRow();
+        if(rowSelected != -1)
+        {
+            jButtonUpdate.setEnabled(true);
+            jButtonDelete.setEnabled(true);
+            jButtonInsert.setEnabled(false);
+            
+            int numberSelected = Integer.parseInt(jTableSheds.getValueAt(rowSelected, 0).toString());
+            try 
+            {
+                Shed shed = shedController.find(numberSelected);
+                jTextFieldNumber.setText(String.valueOf(shed.getNumber()));
+                jComboBoxStatus.setSelectedItem(shed.getStatus());
+            } catch(Exception ex) 
+            {
+                MessageUtils.getInstance().showError(ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jTableShedsMouseClicked
+    
+    public void clear()
+    {
+        jTextFieldNumber.setText("");
+        jComboBoxStatus.setSelectedIndex(0);
+        jTableSheds.clearSelection();
+        jButtonInsert.setEnabled(true);
+        jButtonUpdate.setEnabled(false);
+        jButtonDelete.setEnabled(false);
+    }
     /**
      * @param args the command line arguments
      */
@@ -188,7 +289,7 @@ public class JFrameShed extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton4Clean;
+    private javax.swing.JButton jButtonClean;
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonInsert;
     private javax.swing.JButton jButtonUpdate;

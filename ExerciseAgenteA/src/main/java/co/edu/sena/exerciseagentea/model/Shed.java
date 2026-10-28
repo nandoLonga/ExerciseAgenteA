@@ -40,7 +40,7 @@ public class Shed
     @Override
     public String toString() 
     {
-        return "Shed{" + "number=" + number + ", status=" + status + '}';
+        return + number + " _ " + status;
     }
     
 }
