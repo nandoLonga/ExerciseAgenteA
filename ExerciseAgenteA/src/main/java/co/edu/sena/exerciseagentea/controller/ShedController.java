@@ -1,7 +1,7 @@
 package co.edu.sena.exerciseagentea.controller;
 
 import co.edu.sena.exerciseagentea.model.Shed;
-import java.util.ArrayList;
+import co.edu.sena.exerciseagentea.data.DataStore;
 import java.util.List;
 
 /**
@@ -11,19 +11,7 @@ import java.util.List;
  */
 public class ShedController implements IShedController
 {
-    public static List<Shed> shedList = new ArrayList<>();
-    
-    public  ShedController ()
-    {
-        Shed shed = new Shed(1, "Ocupado");
-        shedList.add(shed);
-        shed = new Shed(2, "Diponible");
-        shedList.add(shed);
-        shed = new Shed(3, "Ocupado");
-        shedList.add(shed);
-        shed = new Shed(4, "Diponible");
-        shedList.add(shed);
-    }
+    private List<Shed> shedList = DataStore.getSheds();
     
     @Override
     public void insert(Shed shed) throws Exception 

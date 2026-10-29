@@ -17,6 +17,7 @@ public class JFrameShed extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFrameShed.class.getName());
     private IShedController shedController = new ShedController();
+    private DefaultTableModel tableModel;
 
     /**
      * Creates new form JFrameShed
@@ -28,7 +29,9 @@ public class JFrameShed extends javax.swing.JFrame {
     
     public void fillTable()
     {
-        DefaultTableModel model = new DefaultTableModel();
+        try
+        {
+            DefaultTableModel model = new DefaultTableModel();
         jTableSheds.setModel(model);
         //columnas
         model.addColumn("Número");
@@ -36,20 +39,18 @@ public class JFrameShed extends javax.swing.JFrame {
         
         //filas
         String[] row = new String[2];
-        for (Shed shed : ShedController.shedList) {
+        for (Shed shed : shedController.findAll()) 
+        {
             row[0] = String.valueOf(shed.getNumber());
             row[1] = shed.getStatus();
             model.addRow(row);
         }
+        }catch (Exception ex) 
+        {
+            System.getLogger(JFrameShed.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     }
-    
-    public void fillComboDepartments()
-    {
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        
-    }
-    
-    
+  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
