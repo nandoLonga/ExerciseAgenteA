@@ -4,7 +4,6 @@ import co.edu.sena.exerciseagentea.controller.IShedController;
 import co.edu.sena.exerciseagentea.controller.ShedController;
 import co.edu.sena.exerciseagentea.model.Shed;
 import co.edu.sena.exerciseagentea.utils.MessageUtils;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -13,7 +12,8 @@ import javax.swing.table.DefaultTableModel;
  * @author luilonmu
  * Objetivo: vista galpon
  */
-public class JFrameShed extends javax.swing.JFrame {
+public class JFrameShed extends javax.swing.JFrame 
+{
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFrameShed.class.getName());
     private IShedController shedController = new ShedController();
