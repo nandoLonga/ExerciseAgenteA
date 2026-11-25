@@ -76,6 +76,8 @@ public class JFrameLine extends javax.swing.JFrame
 
         jLabelName.setText("Nombre linea: ");
 
+        jTextFieldId.setEditable(false);
+
         jButtonInsert.setText("Crear");
         jButtonInsert.addActionListener(this::jButtonInsertActionPerformed);
 
@@ -176,7 +178,6 @@ public class JFrameLine extends javax.swing.JFrame
         try
         {
             Line line = new Line();
-            line.setId(Integer.parseInt(jTextFieldId.getText()));
             line.setName(jTextFieldName.getText()); 
             
             lineController.insert(line);
@@ -244,7 +245,7 @@ public class JFrameLine extends javax.swing.JFrame
             {
                 Line line = lineController.find(numberSelected);
                 jTextFieldId.setText(String.valueOf(line.getId()));
-                line.setName(jTextFieldName.getText());
+                jTextFieldName.setText(line.getName());
             } catch(Exception ex) 
             {
                 MessageUtils.getInstance().showError(ex.getMessage());

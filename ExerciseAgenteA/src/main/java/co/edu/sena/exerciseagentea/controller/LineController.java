@@ -6,6 +6,7 @@ package co.edu.sena.exerciseagentea.controller;
 
 import co.edu.sena.exerciseagentea.model.Line;
 import co.edu.sena.exerciseagentea.data.DataStore;
+import co.edu.sena.exerciseagentea.db.DBLine;
 import java.util.List;
 /**
  * Fecha: 29/10/2026
@@ -13,7 +14,7 @@ import java.util.List;
  * Objetivo: Controller galpon
  */
 public class LineController implements ILineController
-{
+{   private DBLine dbline = new DBLine();
     private List<Line> lineList = DataStore.getLines();
     
     @Override
@@ -24,17 +25,12 @@ public class LineController implements ILineController
             throw new Exception("El galpon está vacío");
         }
         
-        if(line.getId() == 0)
-        {
-            throw new Exception("El número es obligatorio");
-        }
-        
         if("".equals(line.getName()))
         {
             throw new Exception("El estado es obligatorio");
         }
         //insertar
-        lineList.add(line);
+        dbline.insert(line);
     }
 
     @Override
@@ -55,22 +51,13 @@ public class LineController implements ILineController
             throw new Exception("Este campo es obligatorio");
         }
         
-        boolean exists = false;
-        for (int i = 0; i < lineList.size(); i++)
+        Line lineExist = find(line.getId());
+        if(lineExist == null)
         {
-            if(lineList.get(i).getId() == line.getId())
-            {
-                //actualizar
-                lineList.set(i, line);
-                exists = true;
-                break;
-            }
+            throw new Exception ("No existe el registro a actualizar");
         }
         
-        if(!exists)
-        {
-            throw new Exception("No existe informacion de la linea a actualizar");
-        } 
+        dbline.update(line);
     }
 
     @Override
@@ -81,17 +68,13 @@ public class LineController implements ILineController
             throw new Exception("El id es obligatorio");
         }
         
-        boolean exists = false;
-        for (int i = 0; i < lineList.size(); i++)
+        Line lineExist = find(id);
+        if(lineExist == null)
         {
-            if(lineList.get(i).getId() == id)
-            {
-                //actualizar
-                lineList.remove(i);
-                exists = true;
-                break;
-            }
+            throw new Exception ("No existe el registro a eliminar");
         }
+        
+        dbline.delete(id);
     }
 
     @Override
@@ -102,20 +85,13 @@ public class LineController implements ILineController
             throw new Exception("El número es obligatorio");
         }
         
-        Line line = null;
-        for (Line l : lineList) 
-        {
-            if(l.getId() == id)
-            {
-                line = l;
-            }
-        }
-        return line;
+       
+        return dbline.find(id);
     }
 
     @Override
     public List<Line> findAll() throws Exception 
     {
-        return lineList;
+        return dbline.findAll();
     }
 }

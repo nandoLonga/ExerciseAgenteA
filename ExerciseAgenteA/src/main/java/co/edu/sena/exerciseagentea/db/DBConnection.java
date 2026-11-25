@@ -33,7 +33,7 @@ public class DBConnection
             
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e)
         {
-            MessageUtils.getInstance().showError("Error de conexión a la base de datos" + e.getMessage());
+            MessageUtils.getInstance().showError("Error de conexión a la base de datos " + e.getMessage());
         }
     }
     
@@ -51,7 +51,7 @@ public class DBConnection
             }
             IO.println("Desconectado...");
         }catch(SQLException e){
-            MessageUtils.getInstance().showError("Error desconectándose de la base de datos" + e.);
+            MessageUtils.getInstance().showError("Error desconectándose de la base de datos" + e.getMessage());
         }
     }
 }
