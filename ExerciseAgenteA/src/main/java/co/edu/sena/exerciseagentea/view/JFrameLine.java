@@ -29,9 +29,8 @@ public class JFrameLine extends javax.swing.JFrame
     
     public void fillTable()
     {
-        try
-        {
-            DefaultTableModel model = new DefaultTableModel();
+        
+        DefaultTableModel model = new DefaultTableModel();
         jTableLines.setModel(model);
         //columnas
         model.addColumn("Id");
@@ -39,12 +38,14 @@ public class JFrameLine extends javax.swing.JFrame
         
         //filas
         String[] row = new String[2];
-        for (Line line : lineController.findAll()) 
+        try
         {
-            row[0] = String.valueOf(line.getId());
-            row[1] = line.getName();
-            model.addRow(row);
-        }
+            for (Line line : lineController.findAll()) 
+            {
+                row[0] = String.valueOf(line.getId());
+                row[1] = line.getName();
+                model.addRow(row);
+            }
         }catch (Exception ex) 
         {
             System.getLogger(JFrameLine.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);

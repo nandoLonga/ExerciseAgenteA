@@ -54,7 +54,7 @@ public class DBLine extends DBConnection
         }
     }
     
-     public void update (int id)
+     public void delete (int id)
     {
         try{
             connect();  
@@ -130,9 +130,4 @@ public class DBLine extends DBConnection
        return line;
    }
 
-    public void delete(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-   
-   
 }

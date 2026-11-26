@@ -17,14 +17,14 @@ public class DataStore
     
     static
     {
-        Shed shed = new Shed(1, "Ocupado");
-        shedList.add(shed);
-        shed = new Shed(2, "Diponible");
-        shedList.add(shed);
-        shed = new Shed(3, "Ocupado");
-        shedList.add(shed);
-        shed = new Shed(4, "Diponible");
-        shedList.add(shed);
+       // Shed shed = new Shed(1, "Ocupado");
+        //shedList.add(shed);
+       // shed = new Shed(2, "Diponible");
+       // shedList.add(shed);
+       // shed = new Shed(3, "Ocupado");
+       // shedList.add(shed);
+       // shed = new Shed(4, "Diponible");
+       // shedList.add(shed);
         
         lineList.add(new Line (1, "Gallina Babcock"));
         lineList.add(new Line (2, "Gallina Jersey blanca gigante"));
